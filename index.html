@@ -550,10 +550,6 @@
                         <!-- PDFs serão carregados aqui -->
                     </select>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Nome da Música (opcional)</label>
-                    <input type="text" class="form-input" id="musicaName" placeholder="Ex: Aleluia da Alegria">
-                </div>
                 <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" id="btnCancel">Cancelar</button>
                     <button type="submit" class="btn btn-primary" id="btnSave">Salvar</button>
@@ -810,7 +806,6 @@
             const title = document.getElementById('modalTitle');
             const form = document.getElementById('musicaForm');
             const pdfSelect = document.getElementById('pdfSelect');
-            const nameInput = document.getElementById('musicaName');
 
             // Carregar músicas filtradas para este momento
             carregarMusicasFiltradas(momentoId);
@@ -824,7 +819,6 @@
                 title.textContent = 'Editar Música';
                 const musica = repertorio[momentoId][index];
                 pdfSelect.value = musica.musicaId;
-                nameInput.value = musica.nomeCustom || '';
             }
 
             modal.classList.add('active');
@@ -861,7 +855,6 @@
         // Salvar música
         function salvarMusica() {
             const pdfSelect = document.getElementById('pdfSelect');
-            const nameInput = document.getElementById('musicaName');
 
             const musicaId = pdfSelect.value;
             if (!musicaId) {
@@ -874,16 +867,13 @@
             const pasta = pdfOption.dataset.pasta;
             const arquivo = pdfOption.dataset.arquivo;
             const categoria = pdfOption.dataset.categoria;
-            const nomeCustom = nameInput.value.trim();
 
             // Construir URL do PDF
             const pdfUrl = `pdfs/${pasta}/${arquivo}`;
 
             const musica = {
                 musicaId: musicaId,
-                nome: nomeCustom || musicaNome,
-                nomeCustom: nomeCustom,
-                nomeOriginal: musicaNome,
+                nome: musicaNome,
                 url: pdfUrl,
                 categoria: categoria,
                 pasta: pasta,
