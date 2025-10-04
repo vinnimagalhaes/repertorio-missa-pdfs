@@ -1,108 +1,58 @@
 [
   {
     "id": "1",
-    "nome": "Eis-me Aqui",
+    "nome": "A ESCOLHIDA",
     "categoria": "entrada",
     "pasta": "entrada",
-    "arquivo": "eis-me-aqui.pdf"
+    "arquivo": "A ESCOLHIDA.pdf"
   },
   {
     "id": "2",
-    "nome": "Vem, Espírito Santo",
+    "nome": "A JESUS E MARIA CONSAGRO A MINHA FAMÍLIA",
     "categoria": "entrada",
     "pasta": "entrada",
-    "arquivo": "vem-espirito-santo.pdf"
+    "arquivo": "A JESUS E MARIA CONSAGRO A MINHA FAMÍLIA.pdf"
   },
   {
     "id": "3",
-    "nome": "Glória a Deus nas Alturas",
-    "categoria": "gloria",
-    "pasta": "gloria",
-    "arquivo": "gloria-deus-alturas.pdf"
+    "nome": "HÁ UM CHAMADO",
+    "categoria": "entrada",
+    "pasta": "entrada",
+    "arquivo": "HÁ UM CHAMADO.pdf"
   },
   {
     "id": "4",
-    "nome": "Aleluia Páscoa",
-    "categoria": "aclamacao",
-    "pasta": "aclamacao",
-    "arquivo": "aleluia-pascoa.pdf"
+    "nome": "QUEREMOS TE VER",
+    "categoria": "entrada",
+    "pasta": "entrada",
+    "arquivo": "QUEREMOS TE VER.pdf"
   },
   {
     "id": "5",
-    "nome": "Aleluia da Alegria",
-    "categoria": "aclamacao",
-    "pasta": "aclamacao",
-    "arquivo": "aleluia-alegria.pdf"
+    "nome": "TE AMAREI, SENHOR",
+    "categoria": "entrada",
+    "pasta": "entrada",
+    "arquivo": "TE AMAREI, SENHOR.pdf"
   },
   {
     "id": "6",
-    "nome": "Pão e Vinho",
-    "categoria": "ofertorio",
-    "pasta": "ofertorio",
-    "arquivo": "pao-vinho.pdf"
+    "nome": "VAMOS CELEBRAR",
+    "categoria": "entrada",
+    "pasta": "entrada",
+    "arquivo": "VAMOS CELEBRAR.pdf"
   },
   {
     "id": "7",
-    "nome": "Apresentação das Ofertas",
-    "categoria": "ofertorio",
-    "pasta": "ofertorio",
-    "arquivo": "apresentacao-ofertas.pdf"
+    "nome": "CORPO, SANGUE, ALMA E DIVINDADE",
+    "categoria": "comunhao",
+    "pasta": "comunhao",
+    "arquivo": "CORPO, SANGUE, ALMA E DIVINDADE.pdf"
   },
   {
     "id": "8",
-    "nome": "Santo, Santo, Santo",
-    "categoria": "santo",
-    "pasta": "santo",
-    "arquivo": "santo-santo-santo.pdf"
-  },
-  {
-    "id": "9",
-    "nome": "Paz de Cristo",
-    "categoria": "paz",
-    "pasta": "paz",
-    "arquivo": "paz-cristo.pdf"
-  },
-  {
-    "id": "10",
-    "nome": "Cordeiro de Deus",
-    "categoria": "cordeiro",
-    "pasta": "cordeiro",
-    "arquivo": "cordeiro-deus.pdf"
-  },
-  {
-    "id": "11",
-    "nome": "Que o Senhor Nos Una",
-    "categoria": "comunhao",
-    "pasta": "comunhao",
-    "arquivo": "senhor-nos-una.pdf"
-  },
-  {
-    "id": "12",
-    "nome": "Quero Te Adorar",
-    "categoria": "comunhao",
-    "pasta": "comunhao",
-    "arquivo": "quero-te-adorar.pdf"
-  },
-  {
-    "id": "13",
-    "nome": "Gratidão e Louvor",
-    "categoria": "pos-comunhao",
-    "pasta": "pos-comunhao",
-    "arquivo": "gratidao-louvor.pdf"
-  },
-  {
-    "id": "14",
-    "nome": "Ide em Paz",
+    "nome": "QUEM É ESTA QUE AVANÇA COMO AURORA",
     "categoria": "final",
     "pasta": "final",
-    "arquivo": "ide-em-paz.pdf"
-  },
-  {
-    "id": "15",
-    "nome": "Maria, Mãe de Jesus",
-    "categoria": "final",
-    "pasta": "final",
-    "arquivo": "maria-mae-jesus.pdf"
+    "arquivo": "QUEM É ESTA QUE AVANÇA COMO AURORA.pdf"
   }
 ]
-
