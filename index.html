@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Repertório de Missa</title>
+    <!-- PDF-LIB para mesclar PDFs -->
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -430,6 +432,74 @@
         .toast.show {
             transform: translateX(-50%) translateY(0);
         }
+
+        /* Botão Gerar PDF */
+        .gerar-pdf-container {
+            max-width: 600px;
+            margin: 30px auto 40px;
+            padding: 0 20px;
+        }
+
+        .btn-gerar-pdf {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(249, 115, 22, 0.3);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-gerar-pdf:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn-gerar-pdf:active {
+            transform: translateY(0);
+        }
+
+        .btn-gerar-pdf:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-gerar-pdf svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .btn-gerar-pdf.loading .loading-spinner {
+            display: block;
+        }
+
+        .btn-gerar-pdf.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -449,6 +519,23 @@
     <!-- Container -->
     <div class="container" id="momentosContainer">
         <!-- Momentos serão inseridos aqui -->
+    </div>
+
+    <!-- Botão Gerar PDF -->
+    <div class="gerar-pdf-container">
+        <button class="btn-gerar-pdf" id="btnGerarPDF">
+            <div class="loading-spinner"></div>
+            <span class="btn-text">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                    <path d="M14 2v6h6"/>
+                    <line x1="16" y1="13" x2="8" y2="13" stroke="white" stroke-width="2"/>
+                    <line x1="16" y1="17" x2="8" y2="17" stroke="white" stroke-width="2"/>
+                    <polyline points="10 9 9 9 8 9" stroke="white" stroke-width="2"/>
+                </svg>
+                Gerar PDF da Missa
+            </span>
+        </button>
     </div>
 
     <!-- Modal Adicionar/Editar Música -->
@@ -766,6 +853,9 @@
                 e.preventDefault();
                 salvarMusica();
             };
+
+            // Botão gerar PDF
+            document.getElementById('btnGerarPDF').onclick = gerarPDFCompleto;
         }
 
         // Salvar música
@@ -839,6 +929,95 @@
             setTimeout(() => {
                 toast.classList.remove('show');
             }, 2000);
+        }
+
+        // Gerar PDF completo da missa
+        async function gerarPDFCompleto() {
+            const btn = document.getElementById('btnGerarPDF');
+            
+            // Verificar se há músicas no repertório
+            const totalMusicas = momentosMissa.reduce((total, momento) => {
+                return total + (repertorio[momento.id]?.length || 0);
+            }, 0);
+
+            if (totalMusicas === 0) {
+                alert('Adicione pelo menos uma música ao repertório antes de gerar o PDF!');
+                return;
+            }
+
+            try {
+                // Desabilitar botão e mostrar loading
+                btn.disabled = true;
+                btn.classList.add('loading');
+
+                mostrarToast('Gerando PDF... Aguarde!');
+
+                // Criar novo documento PDF
+                const { PDFDocument } = PDFLib;
+                const mergedPdf = await PDFDocument.create();
+
+                // Carregar e mesclar PDFs das músicas
+                let pdfsCarregados = 0;
+                for (const momento of momentosMissa) {
+                    const musicas = repertorio[momento.id] || [];
+                    
+                    for (const musica of musicas) {
+                        try {
+                            mostrarToast(`Carregando: ${musica.nome}...`);
+                            
+                            // Carregar o PDF
+                            const response = await fetch(musica.url);
+                            if (!response.ok) {
+                                console.warn(`PDF não encontrado: ${musica.url}`);
+                                continue;
+                            }
+                            
+                            const pdfBytes = await response.arrayBuffer();
+                            const pdf = await PDFDocument.load(pdfBytes);
+                            
+                            // Copiar todas as páginas
+                            const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+                            copiedPages.forEach((page) => {
+                                mergedPdf.addPage(page);
+                            });
+                            
+                            pdfsCarregados++;
+                        } catch (error) {
+                            console.error(`Erro ao carregar ${musica.nome}:`, error);
+                        }
+                    }
+                }
+
+                if (pdfsCarregados === 0) {
+                    throw new Error('Nenhum PDF foi carregado. Verifique se os arquivos estão acessíveis.');
+                }
+
+                // Salvar e fazer download
+                mostrarToast('Finalizando PDF...');
+                const pdfBytes = await mergedPdf.save();
+                
+                // Criar blob e download
+                const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `Repertorio-Missa-${new Date().toISOString().split('T')[0]}.pdf`;
+                link.click();
+                
+                // Limpar
+                URL.revokeObjectURL(url);
+                
+                mostrarToast(`PDF gerado com sucesso! (${pdfsCarregados} música${pdfsCarregados > 1 ? 's' : ''})`);
+                
+            } catch (error) {
+                console.error('Erro ao gerar PDF:', error);
+                alert('Erro ao gerar PDF: ' + error.message);
+                mostrarToast('Erro ao gerar PDF!');
+            } finally {
+                // Reabilitar botão
+                btn.disabled = false;
+                btn.classList.remove('loading');
+            }
         }
     </script>
 </body>
